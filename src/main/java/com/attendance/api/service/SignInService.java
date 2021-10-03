@@ -45,21 +45,21 @@ public class SignInService {
 			PreparedQuery prepardQuery = datastore.prepare(query);
 			Entity user = prepardQuery.asSingleEntity();
 			if (user != null) {
-
+				String name = user.getProperty("name").toString();
 				if (user.getProperty("password").equals(password)) {
 					request.getSession().setAttribute("userId", user.getKey().getName().toString());
 					request.getSession().setAttribute("email", email);
 
 					if (user.getProperty("role").equals("faculty")) {
 						apiResponse = new ApiErrorResponse(HttpStatus.OK, "200",
-								"faculty successfully logged. you authorized to operation on a resources.",
+								"The "+name+" faculty successfully logged. you authorized to operation on a resources.",
 								"sucessfully faculty logged", (LocalDateTime.now(ZoneOffset.UTC)));
 						jsonResponse.setData(apiResponse);
 						return jsonResponse;
 
 					} else {
 						apiResponse = new ApiErrorResponse(HttpStatus.OK, "200",
-								"student successfully logged. you authorized to operation on a resources.",
+								"The "+name+" student successfully logged. you authorized to operation on a resources.",
 								"sucessfully student logged", (LocalDateTime.now(ZoneOffset.UTC)));
 						jsonResponse.setData(apiResponse);
 						return jsonResponse;
@@ -67,7 +67,7 @@ public class SignInService {
 				} else {
 
 					apiResponse = new ApiErrorResponse(HttpStatus.UNAUTHORIZED, "401",
-							"password was not correct .Please provide a exact password or contact system admin.",
+							"The UserName : "+name+" and password was not correct .Please provide a exact password or contact system admin.",
 							"can't access this resources", (LocalDateTime.now(ZoneOffset.UTC)));
 					jsonResponse.setError(apiResponse);
 					response.setStatus(401);
