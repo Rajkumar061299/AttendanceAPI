@@ -14,8 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.attendance.api.entity.StudentInfo;
+import com.attendance.api.POJO.StudentInfo;
+import com.attendance.api.entity.User;
 import com.attendance.api.exception.ApiErrorResponse;
+import com.attendance.api.ofyservice.OfyService;
 import com.attendance.api.response.JsonResponseClass;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -47,6 +49,7 @@ public class AdminService {
 		entity.setProperty("password", password);
 		entity.setProperty("role", user);
 		datastore.put(entity);
+
 		apiResponse = new ApiErrorResponse(HttpStatus.CREATED, "201", "Faculty " + name + " were created successfully",
 				"faculty were created", (LocalDateTime.now(ZoneOffset.UTC)));
 		jsonResponse.setData(apiResponse);
@@ -135,9 +138,9 @@ public class AdminService {
 
 			copyList.removeAll(queriedEmail1);
 			
-			apiResponse = new ApiErrorResponse(HttpStatus.MULTI_STATUS, "207",
-					queriedEmail+" were found and " +copyList.toString()+" were not found",
-					"some data were found", (LocalDateTime.now(ZoneOffset.UTC)));
+			apiResponse = new ApiErrorResponse(HttpStatus.NOT_FOUND, "404",
+					copyList.toString()+" were not found",
+					"data were no found", (LocalDateTime.now(ZoneOffset.UTC)));
 			jsonResponse.setData(listOfStudents);
 			jsonResponse.setError(apiResponse);
 			response.setStatus(207);

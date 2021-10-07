@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.attendance.api.entity.User;
+import com.attendance.api.POJO.User;
 import com.attendance.api.exception.ApiErrorResponse;
 import com.attendance.api.response.JsonResponseClass;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -35,27 +35,37 @@ public class FacultyService {
 	@SuppressWarnings("deprecation")
 	public JsonResponseClass addAttendance(String studentID, String date, String attendanceStatus,
 			HttpServletResponse response) {
+
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		Key key = KeyFactory.createKey("User", studentID);
 
 		Filter keyFilter = new FilterPredicate(Entity.KEY_RESERVED_PROPERTY, FilterOperator.EQUAL, key);
 		Query query1 = new Query("User").setFilter(keyFilter);
 		PreparedQuery prepardQuery1 = datastore.prepare(query1);
-		if(prepardQuery1.countEntities()==0) {
+		if (prepardQuery1.countEntities() == 0) {
 			apiResponse = new ApiErrorResponse(HttpStatus.NOT_FOUND, "404",
-					"providing invalid studentID in the respone Body. please check the studentID", "Resources Not Found",
-					(LocalDateTime.now(ZoneOffset.UTC)));
+					"providing invalid studentID in the respone Body. please check the studentID",
+					"Resources Not Found", (LocalDateTime.now(ZoneOffset.UTC)));
 			jsonResponse.setError(apiResponse);
 			response.setStatus(404);
 			return jsonResponse;
 
-				}
+		}
 		Entity studentEntity = prepardQuery1.asSingleEntity();
-		
+
 		String name = studentEntity.getProperty("name").toString();
 		String email = studentEntity.getProperty("email").toString();
 
 		String studentAttendance_id = UUID.randomUUID().toString();
+
+//		AttendanceDetails details = new AttendanceDetails();
+//		
+//		Key k = new KeyFactory.Builder("User",studentID).addChild("AttendanceDetails", studentAttendance_id)
+//				.getKey();
+//		
+//		details.attendanceId = k.getName().toString();
+//		
+
 		Entity e = new Entity("AttendanceDetails", studentAttendance_id, key);
 		e.setProperty("name", name);
 		e.setProperty("date", date);

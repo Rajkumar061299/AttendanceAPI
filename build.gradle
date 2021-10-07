@@ -32,6 +32,9 @@ dependencies {
   implementation 'jstl:jstl:1.2'
   compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.8.6'
   compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.1'
+  implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+  compile group: 'com.googlecode.objectify', name: 'objectify', version: '5.1.22'  
+  
 
   testImplementation 'junit:junit:4.12'
   testImplementation 'com.google.truth:truth:0.33'

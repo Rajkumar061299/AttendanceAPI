@@ -27,5 +27,17 @@ public class GlobalExceptionHandler {
 	  jsonResponse.setError(apiResponse); return jsonResponse;
 	  
 	  }
+	  
+	  @ExceptionHandler(UnAuthorizedException.class) public @ResponseBody
+	  JsonResponseClass handleUnauthorizedException(HttpServletResponse response) {
+	  
+	  response.setStatus(401);
+	  JsonResponseClass jsonResponse = new JsonResponseClass(); ApiErrorResponse
+	  apiResponse = new ApiErrorResponse(HttpStatus.UNAUTHORIZED, "401",
+	  "unauthorized user. please provide the valid credentials",
+	  "User can't access the resources", (LocalDateTime.now(ZoneOffset.UTC)));
+	  jsonResponse.setError(apiResponse); return jsonResponse;
+	  
+	  }
 	 
 }

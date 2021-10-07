@@ -1,4 +1,4 @@
-package com.attendance.api.entity;
+package com.attendance.api.POJO;
 
 public class StudentInfo {
 	
